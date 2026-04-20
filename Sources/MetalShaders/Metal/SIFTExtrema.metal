@@ -114,7 +114,8 @@ kernel void siftExtrema(
     texture2d_array<float, access::write> outputTexture [[texture(0)]],
     texture2d_array<float, access::read> inputTexture [[texture(1)]],
     texture2d<uint8, access::read> maskTexture [[texture(2)]],
-    constant float2 &maskScale,
+    constant float &maskScaleX,
+    constant float &maskScaleY,
     ushort3 gid [[thread_position_in_grid]],
     ushort3 threadPositionInThreadGroup [[thread_position_in_threadgroup]],
     ushort3 threadsPerThreadGroup [[threads_per_threadgroup]]
@@ -123,7 +124,7 @@ kernel void siftExtrema(
     
     const float value = inputTexture.read(gid.xy + 1, gid.z + 1).r;
     const int2 center = int2(gid.xy);
-    const int2 maskCenter = int2((int)(center.x * maskScale.x), (int)(center.y * maskScale.y));
+    const int2 maskCenter = int2((int)(center.x * maskScaleX), (int)(center.y * maskScaleY));
 
     if(maskTexture.read(maskCenter+1) == 0) {return;}
     
