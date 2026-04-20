@@ -183,6 +183,7 @@ final class SIFTOctave {
         extremaFunction.encode(
             commandBuffer: commandBuffer,
             inputTexture: scale.differenceTextures,
+            maskTexture: scale.maskTexture,
             outputBuffer: extremaOutputBuffer
         )
     }
