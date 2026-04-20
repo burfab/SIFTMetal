@@ -174,16 +174,16 @@ final class SIFTOctave {
         )
     }
     
-    func encode(commandBuffer: MTLCommandBuffer) {
-        encodeExtrema(commandBuffer: commandBuffer)
+    func encode(commandBuffer: MTLCommandBuffer, maskTexture: MTLTexture) {
+        encodeExtrema(commandBuffer: commandBuffer, maskTexture: maskTexture)
         encodeGradients(commandBuffer: commandBuffer)
     }
     
-    private func encodeExtrema(commandBuffer: MTLCommandBuffer) {
+    private func encodeExtrema(commandBuffer: MTLCommandBuffer, maskTexture: MTLTexture) {
         extremaFunction.encode(
             commandBuffer: commandBuffer,
             inputTexture: scale.differenceTextures,
-            maskTexture: scale.maskTexture,
+            maskTexture: maskTexture,
             outputBuffer: extremaOutputBuffer
         )
     }
