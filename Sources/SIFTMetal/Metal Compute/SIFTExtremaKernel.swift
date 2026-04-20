@@ -38,8 +38,8 @@ final class SIFTExtremaFunction {
         precondition(outputTexture.textureType == .type2DArray)
         precondition(outputTexture.pixelFormat == .rg32Float)
 
-        let maskScaleX = Float(maskTexture.width) / Float(inputTexture.width)
-        let maskScaleY = Float(maskTexture.height) / Float(inputTexture.height)
+        var maskScaleX = Float(maskTexture.width) / Float(inputTexture.width)
+        var maskScaleY = Float(maskTexture.height) / Float(inputTexture.height)
         
         
         let encoder = commandBuffer.makeComputeCommandEncoder()!
@@ -48,9 +48,12 @@ final class SIFTExtremaFunction {
         encoder.setTexture(outputTexture, index: 0)
         encoder.setTexture(inputTexture, index: 1)
         encoder.setTexture(maskTexture, index: 2)
-        encoder.setFloat(maskScaleX, index: 0)
-        encoder.setFloat(maskScaleY, index: 1)
-
+        encoder.setBytes(&maskScaleX,
+                         length: MemoryLayout<Float>.size,
+                         index: 0)
+         encoder.setBytes(&maskScaleY,
+                         length: MemoryLayout<Float>.size,
+                         index: 1)
 
         let threadsPerDimension = Int(cbrt(Float(computePipelineState.maxTotalThreadsPerThreadgroup)))
         let threadsPerThreadgroup = MTLSize(
