@@ -144,14 +144,14 @@ public final class SIFT {
 
     // MARK: Keypoints
     
-    public func getKeypoints(_ inputTexture: MTLTexture) -> [[SIFTKeypoint]] {
-        findKeypoints(inputTexture: inputTexture)
+    public func getKeypoints(_ inputTexture: MTLTexture, maskTexture: MTLTexture) -> [[SIFTKeypoint]] {
+        findKeypoints(inputTexture: inputTexture, maskTexture: maskTexture)
         let keypointOctaves = getKeypointsFromOctaves()
         let interpolatedKeypoints = interpolateKeypoints(keypointOctaves: keypointOctaves)
         return interpolatedKeypoints
     }
     
-    private func findKeypoints(inputTexture: MTLTexture) {
+    private func findKeypoints(inputTexture: MTLTexture, maskTexture: MTLTexture) {
         measure(name: "findKeypoints") {
             capture(commandQueue: commandQueue, capture: false) {
                 let commandBuffer = commandQueue.makeCommandBuffer()!
@@ -164,7 +164,8 @@ public final class SIFT {
                 
                 for octave in octaves {
                     octave.encode(
-                        commandBuffer: commandBuffer
+                        commandBuffer: commandBuffer,
+                        mask: maskTexture
                     )
                 }
                 
