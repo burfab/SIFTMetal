@@ -19,11 +19,11 @@ struct SIFTGradient {
     let magnitude: Float
 }
 
-private let maximumNumberOfExtrema = 4096
+private let maximumNumberOfExtrema = 4096*10
 
-private let maximumNumberOfKeypoints = 4096
+private let maximumNumberOfKeypoints = 4096*10
 
-private let maximumNumberOfDescriptors = 2048
+private let maximumNumberOfDescriptors = 2048*10
 
 
 final class SIFTOctave {
